@@ -3,15 +3,18 @@ OK_COLOR=\033[32;01m
 ERROR_COLOR=\033[31;01m
 WARN_COLOR=\033[33;01m
 
-# Space separated patterns of packages to skip in list, test, format.
-IGNORED_PACKAGES := /vendor/
-
 .PHONY: all
 
 all: up deps migrate
 
+force: rebuild deps migrate
+
+rebuild:
+	@echo "$(OK_COLOR)==> Rebuilding containers$(NO_COLOR)"
+	@docker-compose up -d --build
+
 up:
-	@echo "$(OK_COLOR)==> Creating containers$(NO_COLOR)"
+	@echo "$(OK_COLOR)==> Starting containers$(NO_COLOR)"
 	@docker-compose up -d
 
 deps:

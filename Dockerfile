@@ -39,8 +39,7 @@ COPY . ${APP_DIR}
 COPY ./docker/php-fpm/php.ini ${PHP_INI_DIR}/
 
 RUN set -ex \
-    # Install project dependencies
-    && composer install --prefer-dist --ignore-platform-reqs --no-interaction \
+    && composer global require hirak/prestissimo \
     ## Customize PHP fpm configuration
     && sed -i -e "s/;clear_env\s*=\s*no/clear_env = no/g" /usr/local/etc/php-fpm.conf \
     && sed -i -e "s/;request_terminate_timeout\s*=[^\n]*/request_terminate_timeout = 300/g" /usr/local/etc/php-fpm.conf \
