@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+
+    nginx:
+        build: ./docker/nginx
+        ports:
+          - "8123:80"
+        volumes:
+          - ./public:/server/http/public
+        environment:
+            PHP_FPM_URI: php:9000
+        links:
+          - php
+
+    php:
+        build: .
+        volumes:
+          - ./:/server/http
+        env_file:
+          - .env
+        links:
+          - postgres
+
+    postgres:
+        image: postgres:9.6-alpine
+        ports:
+          - "2345:5432"
+        environment:
+            LC_ALL: C.UTF-8
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+            POSTGRES_DB: docker
